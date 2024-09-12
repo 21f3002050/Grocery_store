@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user_name }}'s Dashboard - Grocery Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">{{ user_name }}'s Dashboard</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('cart') }}">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-4">
+        <h3>Your searched result:</h3>
+        <form method="POST" action="{{ url_for('search_product') }}">
+            <div class="form-group">
+                <input type="text" class="form-control" name="search_query" placeholder="Search for products">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <!-- Display search results here -->
+        {% if search_results %}
+        <h4>Search Results:</h4>
+        <ul>
+            {% for product in search_results %}
+            <li>
+                {{ product.name }} - Rs {{ product.price }}/{{ product.unit }}
+                <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn btn-info btn-sm ml-2">Buy</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

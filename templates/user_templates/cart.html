@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user_name }}'s Cart - Grocery Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">{{ user_name }}'s Cart</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-4">
+        <h3>Your Cart</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price (Rs)</th>
+                    <th>Quantity</th>
+                    <th>Total (Rs)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cart_detail in cart_details %}
+                <tr>
+                    <td>{{ cart_detail.product.name }}</td>
+                    <td>{{ cart_detail.product.price }}</td>
+                    <td>{{ cart_detail.cart_item.quantity }}</td>
+                    <td>{{ cart_detail.total }}</td>
+                    <td>
+                        <a href="{{ url_for('add_to_cart', product_id=cart_detail.product.id) }}" class="btn btn-info btn-sm">Buy More</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="text-right">
+            <h4>Total Price: Rs {{ total_price }}</h4>
+            <form method="POST" action="{{ url_for('thank_you') }}">
+                <button type="submit" class="btn btn-success">Buy All</button>
+            </form>            
+        </div>
+    </div>
+</body>
+</html>

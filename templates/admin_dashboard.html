@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Grocery Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .edit-delete-buttons {
+            display: inline-flex;
+            align-items: center;
+        }
+    </style>
+    <style>
+        .add-category-button {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background-color: #007bff;
+            color: #fff;
+            width: 60px; 
+            height: 30px; 
+            text-align: center;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">Admin's Dashboard</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% if not categories %}
+        <p>No categories or products created yet.</p>
+        {% endif %}
+        {% for category in categories %}
+        <div class="card mb-4">
+            <div class="card-header">
+                {{ category.name }}
+                <a href="{{ url_for('add_products', category_id=category.id) }}" class="btn btn-primary btn-sm float-right ml-2">+</a>
+                <a href="{{ url_for('delete_category', category_id=category.id) }}" class="btn btn-danger btn-sm float-right ml-2">Delete</a>
+                <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn btn-warning btn-sm float-right">Edit</a>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for product in category_products[category] %}
+                    <li>
+                        {{ product.name }}
+                        <div class="edit-delete-buttons">
+                            <a href="{{ url_for('edit_product', product_id=product.id) }}" class="edit-button ml-2">Edit</a>
+                            <a href="{{ url_for('delete_product', product_id=product.id) }}" class="delete-button ml-2">Delete</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>    
+
+    <a href="{{ url_for('add_category') }}" class="add-category-button">+</a>
+
+</body>
+</html>
+

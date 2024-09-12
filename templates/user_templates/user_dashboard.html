@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user_name }}'s Dashboard - Grocery Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">{{ user_name }}'s Dashboard</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('cart') }}">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-4">
+        <h3>Welcome to the Grocery Store</h3>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% if not categories %}
+        <p>No categories or products available yet.</p>
+        {% endif %}
+        {% for category in categories %}
+        <div class="card mb-4">
+            <div class="card-header">
+                {{ category.name }}
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for product in category_products[category] %}
+                    <li>
+                        {{ product.name }} - Rs {{ product.price }}/{{ product.unit }}
+                        {% if product.quantity == 0 %}
+                        <span class="badge badge-danger ml-2">Out of Stock</span>
+                        {% else %}
+                        <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn btn-info btn-sm ml-2">Buy</a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

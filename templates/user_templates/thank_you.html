@@ -1,0 +1,97 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Grocery Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h3>Thank You for Your Order!</h3>
+        <p>Your order has been placed successfully. Here's your order summary:</p>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price (Rs)</th>
+                    <th>Total (Rs)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_item in order_items %}
+                <tr>
+                    <td>{{ order_item.product.name }}</td>
+                    <td>{{ order_item.cart_item.quantity }}</td>
+                    <td>{{ order_item.product.price }}</td>
+                    <td>{{ order_item.total_item_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+        
+        <p>Total Price: Rs {{ total_order_price }}</p>  
+        <p>Order Date and Time: {{ order_items[0].cart_item.order_date_time }}</p> 
+    </div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Grocery Store App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">{{ user_name }}'s Dashboard</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('cart') }}">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-4">
+        <h3>Thank You for Shopping with Us!</h3>
+        <p>Your order has been placed successfully. Here's your order summary:</p>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price (Rs)</th>
+                    <th>Total (Rs)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_item in order_items %}
+                <tr>
+                    <td>{{ order_item.product.name }}</td>
+                    <td>{{ order_item.cart_item.quantity }}</td>
+                    <td>Rs {{ "{:.2f}".format(order_item.product.price) }}</td>
+                    <td>Rs {{ "{:.2f}".format(order_item.total_item_price) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+        
+        <p>Total Price: Rs {{ "{:.2f}".format(total_order_price) }}</p>  
+        <p>Order Date and Time: {{ order_date_time }}</p> 
+    </div>
+</body>
+</html>
